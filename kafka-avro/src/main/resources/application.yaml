@@ -1,0 +1,28 @@
+topic:
+  name: ALBUMS
+  partitions: 1
+  rf: 3
+server:
+  port: 9090
+spring:
+  kafka:
+    bootstrap-servers:
+      - 192.168.137.100:9092, 192.168.137.101:9092, 192.168.137.103:9092
+    properties:
+      schema.registry.url: http://192.168.137.103:8081
+    consumer:
+      bootstrap-servers:
+        - 192.168.137.100:9092, 192.168.137.101:9092, 192.168.137.103:9092
+      group-id: otel_demo_consumer_group_01
+      max-poll-records: 500
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+    template:
+      default-topic:
+logging:
+  level:
+    root: info

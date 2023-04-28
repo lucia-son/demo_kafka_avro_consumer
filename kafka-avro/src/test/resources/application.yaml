@@ -1,0 +1,27 @@
+topic:
+  name: COUPON_TOPIC
+  partitions: 1
+  rf: 1
+server:
+  port: 9090
+spring:
+  kafka:
+    bootstrap-servers:
+      - 192.168.137.101:9092
+    properties:
+      schema.registry.url: http://192.168.137.103:8081
+    consumer:
+      bootstrap-servers:
+        - 192.168.137.101:9092
+      group-id: coupon_consumer_group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      max-poll-records: 700
+      properties:
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+    template:
+      default-topic:
+logging:
+  level:
+    root: info

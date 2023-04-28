@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.2'
+	id 'io.spring.dependency-management' version '1.1.0'
+	// AVRO plugins to use avro schema
+	id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0'
+	// ADD IF YOU USE Intellij
+	id 'idea'
+}
+
+group = 'io.confluent.developer'
+version = '0.0.1'
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	//add repositories for "io.confluent"
+	maven {
+		url "https://packages.confluent.io/maven"
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// Check spring boot * kafka version compatibility
+	implementation 'io.confluent:kafka-schema-registry-client:7.3.1'
+	implementation 'io.confluent:monitoring-interceptors:7.3.1'
+	implementation 'io.confluent:kafka-avro-serializer:7.3.1'
+	implementation ('io.confluent:kafka-streams-avro-serde:7.3.1') {
+		exclude group: 'org.slf4j' , module: 'slf4j-log4j12'
+	}
+	implementation 'org.apache.avro:avro:1.11.0'
+	//cannot find symbol: log.info error
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+bootJar {
+	mainClass = 'io.confluent.developer.kafkaavro.KafkaAvroConsumerApplication'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

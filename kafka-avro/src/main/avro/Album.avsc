@@ -1,0 +1,46 @@
+{
+  "name": "Album",
+  "namespace": "io.confluent.developer",
+  "type": "record",
+  "fields": [
+    {
+      "name": "isn",
+      "type": "int"
+    },
+    {
+      "name": "price",
+      "type": "int"
+    },
+    {
+      "name": "artist",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "release",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "Songs",
+      "type": {
+        "type": "array",
+        "default": [],
+        "items": {
+          "name": "Song",
+          "type": "record",
+          "fields": [
+            {
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "name": "genre",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
